@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automobile Billing & Invoice Management System</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #072654;
+            --secondary-color: #0d6efd;
+            --accent-color: #ffc107;
+            --light-bg: #f8f9fa;
+            --text-color: #333;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--light-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), #1a3a52);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+            transition: 0.3s ease;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 100px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(7, 38, 84, 0.8), rgba(13, 110, 253, 0.8)), 
+                        url("{{ url_for('static', filename='images/in1.jpg') }}") center center/cover no-repeat;
+            color: white;
+            margin-top: 20px;
+            position: relative;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0 0 40px 40px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: slideInDown 0.8s ease;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            animation: slideInUp 0.8s ease;
+        }
+
+        .hero-btn {
+            background: var(--accent-color);
+            color: var(--text-color);
+            padding: 12px 35px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+
+        .hero-btn:hover {
+            background: #ffb300;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Feature Cards */
+        .features-section {
+            padding: 80px 20px;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 60px;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            border-radius: 2px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            height: 100%;
+            background: white;
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+        }
+
+        .card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .card-text {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 30px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Features List */
+        .features-list {
+            padding: 60px 20px;
+            background: white;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--light-bg);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transform: translateX(10px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-right: 20px;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .feature-text h4 {
+            margin-bottom: 5px;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .feature-text p {
+            color: #666;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 60px 20px;
+            background: white;
+        }
+
+        .about-content {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .about-content h3 {
+            color: var(--primary-color);
+            font-weight: 800;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .about-content p {
+            color: #333;
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature-badge {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--primary-color), #1a3a52);
+            color: white;
+            padding: 40px 20px 20px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h5 {
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--accent-color);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">� Auto Invoice & Billing System</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="/logout"> <i class="fas fa-sign-out-alt"></i></i>Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<div class="hero">
+    <div class="container">
+        <h1>Automobile Billing & Invoice Management System</h1>
+        <p>Professional invoicing, GST compliance, and complete billing solutions for automobile dealerships</p>
+        <button class="hero-btn" onclick="document.getElementById('features').scrollIntoView(true)">Get Started</button>
+    </div>
+</div>
+
+<!-- Features Section -->
+<section class="features-section" id="features">
+    <div class="container">
+        <h2 class="section-title">Core Features</h2>
+        <div class="row g-4">
+
+            <!-- Products -->
+            <div class="col-md-6 col-lg-3">
+                <a href="/products" class="text-decoration-none">
+                    <div class="card shadow">
+                        <div class="card-body text-center">
+                            <i class="fas fa-car card-icon text-primary"></i>
+                            <h5 class="card-title">Vehicle Care Products</h5>
+                            <p class="card-text">
+                                Maintain detailed inventory of products, pricing information, and specifications for accurate billing.
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Customers -->
+            <div class="col-md-6 col-lg-3">
+                <a href="/customers" class="text-decoration-none">
+                    <div class="card shadow">
+                        <div class="card-body text-center">
+                            <i class="fas fa-address-book card-icon text-success"></i>
+                            <h5 class="card-title">Customer Database</h5>
+                            <p class="card-text">
+                                Store customer information, billing addresses, contact details, and transaction history.
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Create Invoice -->
+            <div class="col-md-6 col-lg-3">
+                <a href="/add_sale" class="text-decoration-none">
+                    <div class="card shadow">
+                        <div class="card-body text-center">
+                            <i class="fas fa-file-invoice card-icon text-warning"></i>
+                            <h5 class="card-title">Generate Invoices</h5>
+                            <p class="card-text">
+                                Create professional invoices with automatic GST calculation, tax compliance, and PDF export.
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Billing Records -->
+            <div class="col-md-6 col-lg-3">
+                <a href="/sales" class="text-decoration-none">
+                    <div class="card shadow">
+                        <div class="card-body text-center">
+                            <i class="fas fa-receipt card-icon text-danger"></i>
+                            <h5 class="card-title">Billing Reports</h5>
+                            <p class="card-text">
+                                View complete billing history, payment records, and generate financial reports for accounting.
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 stat-item">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">GST Compliant</div>
+            </div>
+            <div class="col-md-4 stat-item">
+                <div class="stat-number">Instant</div>
+                <div class="stat-label">Invoice Generation</div>
+            </div>
+            <div class="col-md-4 stat-item">
+                <div class="stat-number">PDF</div>
+                <div class="stat-label">Export Ready</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="features-list" id="services">
+    <div class="container">
+        <h2 class="section-title">Key Services & Benefits</h2>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                    <div class="feature-text">
+                        <h4>Professional Invoicing</h4>
+                        <p>Generate beautifully formatted invoices with custom branding and details</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-percent"></i></div>
+                    <div class="feature-text">
+                        <h4>GST Calculation</h4>
+                        <p>Automatic GST computation and tax-compliant invoice generation</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-file-pdf"></i></div>
+                    <div class="feature-text">
+                        <h4>PDF Export</h4>
+                        <p>Export invoices to PDF for easy sharing, printing, and archival</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="feature-text">
+                        <h4>Financial Reports</h4>
+                        <p>Detailed billing records and financial analysis for accounting</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="feature-text">
+                        <h4>Secure & Reliable</h4>
+                        <p>Encrypted data storage with reliable SQLite database backend</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <div class="feature-text">
+                        <h4>Access Anywhere</h4>
+                        <p>Responsive design works on desktop, tablet, and mobile devices</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about-section" id="about">
+    <div class="container">
+        <h2 class="section-title">About Our System</h2>
+        <div class="about-content">
+            <h3>Professional Billing Solution for Automobile Industry</h3>
+            <p>
+                Our Automobile Billing & Invoice Management System is purpose-built for automobile dealerships, showrooms, and service centers. It streamlines the invoicing process, ensures GST compliance, and maintains accurate billing records for every transaction.
+            </p>
+            <p>
+                Built with Flask and SQLite, the system guarantees secure data handling, fast invoice generation, and reliable record keeping. The intuitive interface makes billing operations effortless, allowing you to focus on business growth.
+            </p>
+            
+            <div class="about-features">
+                <div class="feature-badge">
+                    <i class="fas fa-check-circle"></i> GST Compliant
+                </div>
+                <div class="feature-badge">
+                    <i class="fas fa-file-pdf"></i> PDF Invoices
+                </div>
+                <div class="feature-badge">
+                    <i class="fas fa-database"></i> Secure Database
+                </div>
+                <div class="feature-badge">
+                    <i class="fas fa-mobile-alt"></i> Mobile Friendly
+                </div>
+                <div class="feature-badge">
+                    <i class="fas fa-tachometer-alt"></i> Fast & Reliable
+                </div>
+                <div class="feature-badge">
+                    <i class="fas fa-shield-alt"></i> Data Protected
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h5>Quick Links</h5>
+                <ul>
+                    <li><a href="/products">Products</a></li>
+                    <li><a href="/customers">Customers</a></li>
+                    <li><a href="/add_sale">Add Sale</a></li>
+                    <li><a href="/sales">Sales Reports</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h5>Billing Features</h5>
+                <ul>
+                    <li><a href="#features">Invoice Generation</a></li>
+                    <li><a href="#services">GST Compliance</a></li>
+                    <li><a href="#services">Billing Reports</a></li>
+                    <li><a href="#services">Customer Records</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h5>About</h5>
+                <ul>
+                    <li><a href="#about">Our System</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#features">Technology Stack</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Automobile Billing & Invoice Management System. All rights reserved.</p>
+            <p>Professional Billing Solution | GST Compliant | Invoice Management</p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+

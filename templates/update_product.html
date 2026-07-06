@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Vehicle</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #072654;
+            --secondary-color: #0d6efd;
+            --accent-color: #ffc107;
+            --light-bg: #f5f7fa;
+            --text-color: #333;
+        }
+
+        body {
+            background: var(--light-bg);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), #1a3a52);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            letter-spacing: 0.4px;
+        }
+
+        .nav-actions a {
+            margin-left: 0.5rem;
+        }
+
+        .page-container {
+            max-width: 720px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+        }
+
+        .page-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            padding: 2rem;
+        }
+
+        .page-title {
+            color: var(--primary-color);
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+        }
+
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+        }
+
+        .form-actions {
+            margin-top: 1.5rem;
+            text-align: right;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            min-width: 130px;
+        }
+
+        .footer-note {
+            margin-top: 1.5rem;
+            color: #666;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" href="/">🚗 Auto Invoice & Billing System</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="ms-auto nav-actions">
+        <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-bars me-2"></i>Menu
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                    <a class="dropdown-item" href="/products">
+                        <i class="fas fa-car me-2"></i>Vehicle Products
+                    </a>
+                </li>
+
+                <li>
+                    <a class="dropdown-item" href="/customers">
+                        <i class="fas fa-users me-2"></i>Customers
+                    </a>
+                </li>
+
+                <li>
+                    <a class="dropdown-item" href="/add_sale">
+                        <i class="fas fa-file-invoice me-2"></i>Create Invoice
+                    </a>
+                </li>
+
+                <li>
+                    <a class="dropdown-item" href="/sales">
+                        <i class="fas fa-receipt me-2"></i>Billing Records
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+
+                <li>
+                    <a class="dropdown-item" href="/">
+                        <i class="fas fa-house-chimney me-2"></i>Home
+                    </a>
+                </li>
+            </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="page-container">
+  <div class="page-card">
+    <h2 class="page-title">Update Vehicle</h2>
+    <p class="page-subtitle">Edit the vehicle details for billing and inventory accuracy.</p>
+
+    <form method="POST">
+      <div class="mb-3">
+        <label class="form-label" for="name">Vehicle Name</label>
+        <input type="text" class="form-control" id="name" name="name" value="{{ product[1] }}" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="category">Category</label>
+        <input type="text" class="form-control" id="category" name="category" value="{{ product[2] }}" required>
+      </div>
+
+      <div class="mb-3 row">
+        <div class="col-md-6 mb-3 mb-md-0">
+          <label class="form-label" for="hsn">HSN Code</label>
+          <input type="number" class="form-control" id="hsn" name="hsn" value="{{ product[5] }}" required>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label" for="mrp">MRP</label>
+          <input type="number" step="0.01" class="form-control" id="mrp" name="mrp" value="{{ product[6] }}" required>
+        </div>
+      </div>
+
+      <div class="mb-3 row">
+        <div class="col-md-6 mb-3 mb-md-0">
+          <label class="form-label" for="price">Price</label>
+          <input type="number" step="0.01" class="form-control" id="price" name="price" value="{{ product[3] }}" required>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label" for="quantity">Quantity</label>
+          <input type="number" class="form-control" id="quantity" name="quantity" value="{{ product[4] }}" required>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <a href="/products" class="btn btn-secondary me-2">Cancel</a>
+        <button type="submit" class="btn btn-primary">Update Product</button>
+      </div>
+    </form>
+
+    <p class="footer-note">After saving, your updated vehicle details will be reflected in the billing catalog and invoice workflow.</p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
